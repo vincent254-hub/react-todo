@@ -1,33 +1,55 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Header from './components/Header';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
 
-function App() {
-  const [tasks, setTasks] = useState ([
-    {
-        id: 1,
-        text: 'Do some laravel Programming',
-        day: 'Aug 5th at 10:00 am',
-        reminder: true,
-    },
 
-    {
-        id: 2,
-        text: 'Start Planning on Malila project wireframe',
-        day: 'Sept 10th at 06:00 am',
-        reminder: true,
-    },
-    {
-        id: 3,
-        text: 'Finish a clients task',
-        day: 'Sept 15th at 10:00 pm',
-        reminder: false,
+function App() {
+  const[showAddTask, setShowAddTask] = useState(false);
+  const [tasks, setTasks] = useState ([])
+  useEffect(()=>{
+    const getTasks =  async () => {
+      const tasksFromServer = await fetchTasks()
+      setTasks(tasksFromServer)
+
+      
     }
-])
+    getTasks()
+  }, []);
+
+  //fetch taks from db
+
+  const fetchTasks = async() => {
+     const res = await fetch('http://localhost:5000/tasks')
+      const data = await res.json()
+      return data
+  }
+  
+
+
+//add a task
+const addTask = async (task) => {
+  const res =  await fetch('http://localhost:5000/tasks', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(task)
+  })
+  const data = await res.json()
+  setTasks([...tasks, data])
+
+
+  // const id =  Math.floor(Math.random() * 10000) + 1
+  // const newTask = {id, ...task}
+  // setTasks([...tasks, newTask]);
+}
 
 // delete task
-const deleteTask = (id) => {
+const deleteTask = async (id) => {
+  await fetch(`http://localhost:5000/tasks/${id}`, {
+    method: 'DELETE'
+  })
   setTasks(tasks.filter((task) => task.id !==id))
 }
 // toggle reminder
@@ -62,8 +84,8 @@ const toggleReminder = (id) => {
 }
   return (
     <div className="container">
-      <Header title={"Task Manager"} />
-      <AddTask />
+      <Header title={"Task Manager"} onAdd ={() => setShowAddTask(!showAddTask)} showAdd= {showAddTask} />
+      {showAddTask && <AddTask onAdd={addTask}/>}
       {tasks.length > 0 ? (<Tasks tasks={tasks} 
         onDelete = {deleteTask} onClick={true} onToggle={toggleReminder} />)
         : ('There are no Tasks for you today!!')

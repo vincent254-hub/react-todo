@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import swal from 'sweetalert';
 
 const AddTask = ({ onAdd }) => {
   const [text, setText] = useState('')
@@ -9,7 +10,8 @@ const AddTask = ({ onAdd }) => {
     e.preventDefault()
 
     if (!text) {
-      alert('Please add a task')
+      swal({title: 'Tasks', text:'Kindly add a task, no empty fields allowed!', icon: "warning",
+      dangerMode: true,})
       return
     }
 
