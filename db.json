@@ -1,28 +1,16 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "text": "Do some laravel Programming",
-      "day": "Aug 5th at 10:00 am",
-      "reminder": true
-    },
-    {
-      "id": 2,
-      "text": "Start Planning on Malila project wireframe",
-      "day": "Sept 10th at 06:00 am",
-      "reminder": true
-    },
-    {
-      "text": "test1",
-      "day": "today",
-      "reminder": true,
-      "id": 3
-    },
-    {
-      "text": "cpp for pros",
-      "day": "now",
+      "text": "Laravel coding",
+      "day": "todate",
       "reminder": false,
-      "id": 4
+      "id": 1
+    },
+    {
+      "text": "Fixing this App functionality on Mobile devices",
+      "day": "Today",
+      "reminder": true,
+      "id": 2
     }
   ]
 }
